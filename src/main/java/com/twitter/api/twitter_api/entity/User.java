@@ -5,7 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Setter @Getter
@@ -30,6 +32,14 @@ public class User {
     private String location;
     private String websiteUrl;
     private String bio;
+
+    @OneToMany(
+            cascade = CascadeType.REFRESH,
+            fetch = FetchType.EAGER,
+            mappedBy = "user",
+            orphanRemoval = true
+    )
+    private List<Tweet> tweets = new ArrayList<>();
 
     @Transient
     private String confirmPassword;
