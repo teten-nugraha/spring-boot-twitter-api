@@ -1,11 +1,14 @@
 package com.twitter.api.twitter_api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Setter
@@ -28,6 +31,24 @@ public class Tweet {
 
     @NotBlank(message = "Tweet is required")
     private String text;
+
+    @JsonIgnore
+    @OneToMany(
+            cascade = CascadeType.REFRESH,
+            fetch = FetchType.LAZY,
+            mappedBy = "tweet",
+            orphanRemoval = true
+    )
+    private List<Reply> replies = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            cascade = CascadeType.REFRESH,
+            fetch = FetchType.LAZY,
+            mappedBy = "tweet",
+            orphanRemoval = true
+    )
+    private List<Reply> favorites = new ArrayList<>();
 
     private Date create_At;
     private Date update_At;

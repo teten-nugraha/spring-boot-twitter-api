@@ -1,5 +1,7 @@
 package com.twitter.api.twitter_api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.twitter.api.twitter_api.Favorit;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,13 +35,41 @@ public class User {
     private String websiteUrl;
     private String bio;
 
+    @JsonIgnore
     @OneToMany(
             cascade = CascadeType.REFRESH,
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             mappedBy = "user",
             orphanRemoval = true
     )
     private List<Tweet> tweets = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            cascade = CascadeType.REFRESH,
+            fetch = FetchType.LAZY,
+            mappedBy = "user",
+            orphanRemoval = true
+    )
+    private List<Follower> following = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            cascade = CascadeType.REFRESH,
+            fetch = FetchType.LAZY,
+            mappedBy = "user",
+            orphanRemoval = true
+    )
+    private List<Reply> replies = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            cascade = CascadeType.REFRESH,
+            fetch = FetchType.LAZY,
+            mappedBy = "user",
+            orphanRemoval = true
+    )
+    private List<Favorit> favorites = new ArrayList<>();
 
     @Transient
     private String confirmPassword;
