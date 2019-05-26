@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Setter
 @Getter
-public class Tweet {
+public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,22 +26,33 @@ public class Tweet {
     )
     private User user;
 
-    @NotBlank(message = "Tweet is required")
-    private String text;
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.REFRESH
+    )
+    @JoinColumn(
+            name = "tweet_id",
+            nullable = false
+    )
+    private Tweet tweet;
+
+    @NotBlank(message = "reply is required")
+    private String reply;
 
     private Date create_At;
     private Date update_At;
 
-    public Tweet() {
+
+    public Reply() {
     }
 
     @PrePersist
-    protected void onCreate() {
+    protected void onCreate(){
         this.create_At = new Date();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.create_At = new Date();
+        this.update_At = new Date();
     }
 }
